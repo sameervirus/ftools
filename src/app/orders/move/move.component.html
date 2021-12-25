@@ -1,0 +1,262 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Main content -->
+      <div class="invoice p-3 mb-3">
+        <!-- title row -->
+        <div class="row">
+          <div class="col-12">
+            <h4>
+              <i class="fas fa-shopping-cart"></i> {{ title }}
+              <small class="float-left"
+                >التاريخ: {{ today | date: "y-M-d" }}</small
+              >
+            </h4>
+          </div>
+          <!-- /.col -->
+        </div>
+        <hr />
+        <!-- info row -->
+        <div *ngIf="type == 1" class="row invoice-info">
+          <div class="col-sm-3 invoice-col">
+            <div class="form-group">
+              <label>العميل</label>
+              <ng-select
+                [items]="clients"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="client"
+                placeholder="اختار عميل"
+                (change)="onClientChange($event)"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-2 invoice-col">
+            <div class="form-group">
+              <label>رقم الفاتورة</label>
+              <input type="text" class="form-control" [(ngModel)]="invoiceNo" />
+            </div>
+          </div>
+          <div class="col-sm-2 invoice-col">
+            <div class="form-group">
+              <label>تاريخ الفاتورة</label>
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="invoiceDate"
+              />
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <div class="row invoice-info">
+          <div class="col-sm-3 invoice-col">
+            <div class="form-group">
+              <label>من مخزن</label>
+              <ng-select
+                [items]="warehouses"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="اختار مخزن"
+                [(ngModel)]="from_warehouse"
+                [disabled]="type == 1"
+                (change)="onWarehouseChange($event, 'from')"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-3 invoice-col">
+            <div class="form-group">
+              <label>الي مخزن</label>
+              <ng-select
+                [items]="warehouses"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="warehouse"
+                placeholder="اختار مخزن"
+                (change)="onWarehouseChange($event, 'to')"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-2 invoice-col">
+            <div class="form-group">
+              <label>رقم الاذن</label>
+              <input type="text" class="form-control" [(ngModel)]="trans_no" />
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-2 invoice-col">
+            <div class="form-group">
+              <label>تاريخ الاذن</label>
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="trans_date"
+              />
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <!-- this row will not appear when printing -->
+      </div>
+      <!-- /.invoice -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+  <div class="row">
+    <div class="col-12">
+      <!-- Main content -->
+      <div class="invoice p-3 mb-3">
+        <!-- title row -->
+        <div class="row">
+          <div class="col-sm-8">
+            <h4>البنود</h4>
+            <table class="table table-bordered">
+              <tr class="bg-dark">
+                <th width="70%">البند</th>
+                <th *ngIf="type == 1">السعر</th>
+                <th>الكمية</th>
+              </tr>
+              <tr>
+                <td class="position-relative">
+                  <input
+                    id="inputItem"
+                    autocomplete="off"
+                    type="text"
+                    [(ngModel)]="itemInput"
+                    class="form-control"
+                    (keyup)="handleInput($event)"
+                    (keydown)="handleDown($event)"
+                  />
+                  <div
+                    class="ng-dropdown-panel ng-select-bottom"
+                    style="opacity: 1"
+                  >
+                    <div
+                      *ngIf="isOpen"
+                      class="ng-dropdown-panel-items scroll-host"
+                    >
+                      <div>
+                        <div
+                          *ngFor="let i of filteredItems; let idx = index"
+                          class="ng-option"
+                          [class.ng-option-marked]="idx === currentIndex"
+                          (click)="clickedItem(i)"
+                          (mouseover)="currentIndex = idx"
+                        >
+                          <span class="ng-option-label"
+                            >{{ i.code }} : {{ i.name }}</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="type == 1">
+                  <input
+                    id="priceInput"
+                    autocomplete="off"
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="itemPrice"
+                    (keydown.enter)="addPrice($event)"
+                    (blur)="addPrice($event)"
+                  />
+                </td>
+                <td>
+                  <input
+                    id="qtyInput"
+                    autocomplete="off"
+                    type="number"
+                    class="form-control"
+                    value=""
+                    (keydown.enter)="addItem(qty)"
+                    #qty
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                  <button
+                    type="button"
+                    class="btn btn-block bg-gradient-success btn-sm"
+                    (click)="addItem(qty)"
+                  >
+                    اضف
+                  </button>
+                </td>
+              </tr>
+            </table>
+            <hr />
+            <table
+              *ngIf="selectedItems.length > 0"
+              class="table table-bordered"
+            >
+              <tr>
+                <th>#</th>
+                <th>Code</th>
+                <th>Item</th>
+                <th>Unit</th>
+                <th>Category</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+              <tr *ngFor="let s of selectedItems; let n = index">
+                <td>{{ n + 1 }}</td>
+                <td>{{ s.code }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.unit }}</td>
+                <td>{{ s.category }}</td>
+                <td>{{ s.qty }}</td>
+                <td>{{ s.price }}</td>
+                <td>{{ s.price * s.qty }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-sm-4">
+            <h4>إجمالي</h4>
+            <table class="table table-bordered">
+              <tr>
+                <th class="bg-dark w-50">اجمالي الكمية</th>
+                <td>{{ totalQty }}</td>
+              </tr>
+              <tr>
+                <th class="bg-dark">اجمالي الفاتورة</th>
+                <td>{{ totalPrice }}</td>
+              </tr>
+              <tr>
+                <th class="bg-dark">ملحوظة</th>
+                <td><textarea [(ngModel)]="comments" rows="3"></textarea></td>
+              </tr>
+              <tr *ngIf="selectedItems.length > 0">
+                <td colspan="2">
+                  <button
+                    (click)="saveInvoice()"
+                    type="button"
+                    class="btn btn-block bg-gradient-primary"
+                  >
+                    حفظ
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- this row will not appear when printing -->
+      </div>
+      <!-- /.invoice -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</div>

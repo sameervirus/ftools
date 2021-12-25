@@ -1,0 +1,213 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-6">
+      <!-- Form Element sizes -->
+      <div class="card">
+        <div class="card-header ui-sortable-handle">
+          <h3 class="card-title">
+            <i class="ion ion-clipboard mr-1"></i>
+            قائمة المستخدمين
+          </h3>
+          <div class="card-tools">
+            <pagination-controls
+              (pageChange)="p = $event"
+              previousLabel=""
+              nextLabel=""
+            ></pagination-controls>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <table *ngIf="users && users.length > 0" class="table table-sm">
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <th>اسم المستخدم</th>
+                <th>الايميل</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let user of users
+                    | paginate: { itemsPerPage: 10, currentPage: p }
+                "
+              >
+                <td>{{ user.name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                  <i
+                    class="fas fa-edit text-danger pointer"
+                    (click)="
+                      editUser(
+                        user.id,
+                        user.name,
+                        user.email,
+                        user.username,
+                        user.role
+                      )
+                    "
+                  ></i>
+                </td>
+              </tr>
+              <tr *ngIf="users && users.length < 1">
+                <td colspan="4"><h2>لا يوجد مستخدمون</h2></td>
+              </tr>
+            </tbody>
+          </table>
+          <p *ngIf="users && users.length < 1">لا يوجد مستخدمون</p>
+          <p *ngIf="!users"><i class="fas fa-spinner fa-spin"></i></p>
+        </div>
+      </div>
+    </div>
+
+    <!--/.col (left) -->
+    <!-- right column -->
+    <div class="col-md-6">
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">إنشاء مستخدم جديد</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="name">الاسم*</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    placeholder="English Name"
+                    required
+                    minlength="4"
+                    [(ngModel)]="user.name"
+                    #name="ngModel"
+                    [class.is-invalid]="
+                      name.invalid && (name.dirty || name.touched)
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <!-- text input -->
+                <div class="form-group">
+                  <label>الايميل *</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    required
+                    [(ngModel)]="user.email"
+                    #email="ngModel"
+                    [class.is-invalid]="
+                      email.invalid && (email.dirty || email.touched)
+                    "
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>اسم المستخدم *</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="username"
+                    required
+                    [(ngModel)]="user.username"
+                    #username="ngModel"
+                    minlength="5"
+                    [class.is-invalid]="
+                      username.invalid && (username.dirty || username.touched)
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <!-- text input -->
+                <div class="form-group">
+                  <label>كلمة المرور</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="password"
+                    [(ngModel)]="user.password"
+                    #password="ngModel"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>تأكيد كلمة المرور</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="password_confirmation"
+                    [(ngModel)]="user.password_confirmation"
+                    #password_confirmation="ngModel"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <!-- text input -->
+                <div class="form-group">
+                  <label>اختار الوظيفة</label>
+                  <select
+                    *ngIf="roles"
+                    name="role"
+                    class="form-control"
+                    [(ngModel)]="user.role"
+                    #role="ngModel"
+                  >
+                    <option>اختار الوظيفة</option>
+                    <option *ngFor="let r of roles" [value]="r.id">
+                      {{ r.name_ar }}
+                    </option>
+                  </select>
+                  <p *ngIf="!roles"><i class="fas fa-spinner fa-spin"></i></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+
+          <div class="card-footer">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="!userForm.valid"
+              [disabled]="loading"
+            >
+              <span *ngIf="loading"
+                ><i class="fas fa-spinner fa-spin"></i
+              ></span>
+              حفظ
+            </button>
+            <button
+              *ngIf="isUpdate"
+              class="btn btn-info float-left"
+              (click)="resetFrom(userForm)"
+            >
+              الغاء
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.card -->
+    </div>
+    <!--/.col (right) -->
+  </div>
+  <!-- /.row -->
+</div>

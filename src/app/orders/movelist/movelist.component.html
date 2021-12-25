@@ -1,0 +1,180 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Main content -->
+      <div class="invoice p-3 mb-3">
+        <!-- info row -->
+        <div class="row invoice-info">
+          <div class="col-sm-3 invoice-col">
+            <div class="form-group">
+              <label>العميل</label>
+              <ng-select
+                [items]="clients"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="اختار عميل"
+                (change)="onClientChange($event)"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-3 invoice-col">
+            <div class="form-group">
+              <label>مخزن</label>
+              <ng-select
+                [items]="warehouses"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="اختار مخزن"
+                (change)="onWarehouseChange($event)"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-2 invoice-col">
+            <div class="form-group">
+              <label>نوع الحركة</label>
+              <ng-select
+                [items]="transfers"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="اختار نوع الحركة"
+                (change)="onTransferChange($event)"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-2 invoice-col">
+            <div class="form-group">
+              <label>من تاريخ</label>
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="from_trans_date"
+                (change)="filterItems()"
+              />
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-2 invoice-col">
+            <div class="form-group">
+              <label>الي تاريخ</label>
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="to_trans_date"
+                (change)="filterItems()"
+              />
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <!-- this row will not appear when printing -->
+      </div>
+      <!-- /.invoice -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+  <div class="row">
+    <div class="col-12">
+      <!-- Main content -->
+      <div class="invoice p-3 mb-3">
+        <!-- title row -->
+        <div class="row">
+          <div class="col-sm-6"><h4>قائمة الحركات</h4></div>
+          <div class="col-sm-6 text-left">
+            <button
+              class="btn btn-sm btn-success float-left mr-3"
+              (click)="exportAsXLSX()"
+            >
+              اكسيل
+            </button>
+            <pagination-controls
+              (pageChange)="p = $event"
+              previousLabel=""
+              nextLabel=""
+              class="float-left"
+            ></pagination-controls>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <p
+              class="text-center"
+              *ngIf="filteredItems && filteredItems.length < 1"
+            >
+              لا يوجد حركات
+            </p>
+            <p *ngIf="!filteredItems" class="text-center">
+              <i class="fas fa-spinner fa-spin"></i>
+            </p>
+            <table
+              *ngIf="filteredItems && filteredItems.length > 0"
+              class="table table-sm table-bordered"
+            >
+              <thead>
+                <tr>
+                  <th>التاريخ</th>
+                  <th>رقم الاذن</th>
+                  <th>من</th>
+                  <th>الي</th>
+                  <th>نوع الحركة</th>
+                  <th>الكمية</th>
+                  <th>التكلفة</th>
+                  <th>العميل</th>
+                  <th>ملاحظات</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let item of filteredItems
+                      | paginate: { itemsPerPage: 10, currentPage: p }
+                  "
+                >
+                  <td>{{ item.trans_date }}</td>
+                  <td>{{ item.trans_no }}</td>
+                  <td>{{ item.from_warehouse }}</td>
+                  <td>{{ item.to_warehouse }}</td>
+                  <td>{{ item.transfer_type_name }}</td>
+                  <td>{{ item.qty }}</td>
+                  <td>{{ item.cost }}</td>
+                  <td>{{ item.client }}</td>
+                  <td>{{ item.comments }}</td>
+                  <td>
+                    <i
+                      class="fas fa-folder text-info pointer ml-3"
+                      routerLink="/orders/item/{{ item.trans_no }}"
+                    ></i>
+                    <i
+                      class="fas fa-edit text-danger pointer ml-3"
+                      [routerLink]="[
+                        '/orders/move/' +
+                          item.transfer_type_id +
+                          '/' +
+                          item.trans_no
+                      ]"
+                    ></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- /.col -->
+        </div>
+        <!-- this row will not appear when printing -->
+      </div>
+      <!-- /.invoice -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</div>

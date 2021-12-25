@@ -1,0 +1,106 @@
+<div class="container-fluid" *ngIf="item">
+  <div class="row">
+    <div class="col-12">
+      <!-- Main content -->
+      <div class="invoice p-3 mb-3">
+        <!-- info row -->
+        <div class="row invoice-info">
+          <div class="col-sm-12 invoice-col">
+            <h2 class="text-center mb-3">رقم الاذن {{ item.trans_no }}</h2>
+            <table class="table table-bordered">
+              <tr>
+                <th class="bg-navy">رقم الاذن</th>
+                <td class="w-15">{{ item.trans_no }}</td>
+                <th class="bg-navy">تاريخ الاذن</th>
+                <td class="w-15">{{ item.trans_date }}</td>
+                <th class="bg-navy">نوع الحركة</th>
+                <td class="w-15">{{ item.transfer_type_name }}</td>
+                <th class="bg-navy">العميل</th>
+                <td class="w-15">{{ item.client }}</td>
+              </tr>
+              <tr>
+                <th class="bg-navy">من مخزن</th>
+                <td class="w-15">{{ item.from_warehouse }}</td>
+                <th class="bg-navy">الي مخزن</th>
+                <td class="w-15">{{ item.to_warehouse }}</td>
+                <th class="bg-navy">الكمية</th>
+                <td class="w-15">{{ item.qty }}</td>
+                <th class="bg-navy">التكلفة</th>
+                <td class="w-15">{{ item.cost }}</td>
+              </tr>
+              <tr>
+                <th class="bg-navy">ملاحظات</th>
+                <td class="w-15" colspan="5">{{ item.comments }}</td>
+                <th class="bg-navy">المستخدم</th>
+                <td class="w-15">{{ item.user }}</td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <!-- this row will not appear when printing -->
+      </div>
+      <!-- /.invoice -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+  <div class="row">
+    <div class="col-12">
+      <!-- Main content -->
+      <div class="invoice p-3 mb-3">
+        <!-- title row -->
+        <div class="row">
+          <div class="col-sm-12">
+            <p
+              class="text-center"
+              *ngIf="item.details && item.details.length < 1"
+            >
+              لا يوجد بنود
+            </p>
+            <table
+              *ngIf="item.details && item.details.length > 0"
+              class="table table-sm table-bordered"
+            >
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>الكود</th>
+                  <th>الاسم</th>
+                  <th>التصنيف</th>
+                  <th>الوحدة</th>
+                  <th>السعر</th>
+                  <th>الكمية</th>
+                  <th>الاجمالي</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of item.details; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ detail.item.code }}</td>
+                  <td>{{ detail.item.name }}</td>
+                  <td>{{ detail.item.category }}</td>
+                  <td>{{ detail.item.unit }}</td>
+                  <td>{{ detail.cost }}</td>
+                  <td>{{ detail.qty }}</td>
+                  <td>{{ detail.qty * detail.cost }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- /.col -->
+        </div>
+        <!-- this row will not appear when printing -->
+      </div>
+      <!-- /.invoice -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</div>
+<p *ngIf="!item" class="text-center">
+  <i class="fas fa-spinner fa-spin"></i>
+</p>

@@ -1,0 +1,145 @@
+<!-- Main Sidebar Container -->
+<aside
+  class="main-sidebar {{ sidebarStyle }} elevation-4"
+  style="min-height: 1000px"
+>
+  <!-- Brand Logo -->
+  <a href="/" class="brand-link">
+    <img
+      src="assets/arcons.jpg"
+      alt="ARCONS Logo"
+      class="brand-image elevation-3"
+      style="opacity: 0.8"
+    />
+    <span class="brand-text font-weight-light">برنامج مخازن</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <!-- <div class="image">
+          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div> -->
+      <div class="info">
+        <a [routerLink]="['/users/profile']" class="d-block">{{
+          user?.name
+        }}</a>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul
+        class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        role="menu"
+        data-accordion="false"
+      >
+        <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+        <li class="nav-item">
+          <a
+            (click)="changeView('home')"
+            [class.active]="homeMenu"
+            routerLink="/"
+            class="nav-link"
+          >
+            <i class="nav-icon fas fa-home"></i>
+            <p>الرئيسية</p>
+          </a>
+        </li>
+        <li *ngxPermissionsOnly="['coding']" class="nav-item">
+          <a
+            (click)="changeView('coding')"
+            [class.active]="codingMenu"
+            routerLink="/coding"
+            class="nav-link"
+          >
+            <i class="nav-icon far fa-image"></i>
+            <p>التكويد</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            (click)="changeView('movelist')"
+            [class.active]="movelistMenu"
+            routerLink="/orders/movelist"
+            class="nav-link"
+          >
+            <i class="nav-icon far fa-image"></i>
+            <p>الحركات</p>
+          </a>
+        </li>
+        <li class="nav-item" [class.menu-open]="usersMenu">
+          <a
+            (click)="changeView('users')"
+            [class.active]="usersMenu"
+            class="nav-link pointer"
+          >
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+              إدارة المستخدمين
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview" [class.d-block]="usersSub">
+            <li class="nav-item">
+              <a
+                [routerLink]="['/users/profile']"
+                [class.active]="profileComp"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>الملف الشخصي</p>
+              </a>
+            </li>
+            <li
+              *ngxPermissionsOnly="['manage all users', 'manage users']"
+              class="nav-item"
+            >
+              <a
+                [routerLink]="['/users']"
+                [class.active]="usersComp"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>المستخدمون</p>
+              </a>
+            </li>
+            <li *ngxPermissionsOnly="['manage roles']" class="nav-item">
+              <a
+                [routerLink]="['/users/roles']"
+                [class.active]="rolesComp"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>الوظائف</p>
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+                <a [routerLink]="['/orders/history']" [class.active]="historyComp" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Orders History</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a [routerLink]="['/orders/reviews']" [class.active]="reviewsComp" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Orders Review</p>
+                </a>
+              </li> -->
+            <!-- <li class="nav-item">
+                <a href="assets/index3.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v3</p>
+                </a>
+              </li> -->
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

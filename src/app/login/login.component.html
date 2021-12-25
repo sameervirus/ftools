@@ -1,0 +1,77 @@
+<div class="login-box">
+  <div class="login-logo">
+    <p>برنامج المخازن</p>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">تسجيل الدخول لبدء الجلسة الخاصة بك</p>
+
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            name="username"
+            class="form-control"
+            placeholder="اسم المستخدم"
+            required
+            minlength="4"
+            [(ngModel)]="login.username"
+            #username="ngModel"
+            [class.is-invalid]="
+              username.invalid && (username.dirty || username.touched)
+            "
+          />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+          <span
+            *ngIf="username.invalid && (username.dirty || username.touched)"
+            class="error invalid-feedback"
+            >الرجاء إدخال اسم المستخدم</span
+          >
+        </div>
+        <div class="input-group mb-3">
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            placeholder="كلمة المرور"
+            required
+            [(ngModel)]="login.password"
+            #password="ngModel"
+            [class.is-invalid]="
+              password.invalid && (password.dirty || password.touched)
+            "
+          />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+          <span
+            *ngIf="password.invalid && (password.dirty || password.touched)"
+            class="error invalid-feedback"
+            >من فضلك أدخل كلمة المرور</span
+          >
+        </div>
+        <div class="row">
+          <!-- /.col -->
+          <div class="col-sm-4">
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              [disabled]="loginForm.invalid"
+            >
+              تسجيل الدخول
+            </button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-6">
+      <!-- Form Element sizes -->
+      <div class="card">
+        <div class="card-header ui-sortable-handle">
+          <h3 class="card-title">
+            <i class="ion ion-clipboard mr-1"></i>
+            قائمة التصنيفات
+          </h3>
+          <div class="card-tools">
+            <pagination-controls
+              (pageChange)="p = $event"
+              previousLabel=""
+              nextLabel=""
+            ></pagination-controls>
+            <br />
+            <form class="form-horizontal">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">البحث</label>
+                <div class="col-sm-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    (input)="onSearchChange($event)"
+                    value=""
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>التصنيف</th>
+                <th>تعديل</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="warehouses && warehouses.length > 0">
+              <tr
+                *ngFor="
+                  let warehouse of warehouses
+                    | paginate: { itemsPerPage: 10, currentPage: p }
+                "
+              >
+                <td>{{ warehouse.name }}</td>
+                <td>
+                  <i
+                    class="fas fa-edit text-danger pointer"
+                    (click)="editWarehouse(warehouse.id, warehouse.name)"
+                  ></i>
+                </td>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr *ngIf="warehouses && warehouses.length < 1">
+                <td colspan="4"><h2>لا يوجد تصنيفات</h2></td>
+              </tr>
+            </tbody>
+          </table>
+          <p *ngIf="warehouses && warehouses.length < 1">لا يوجد تصنيفات</p>
+          <p *ngIf="!warehouses"><i class="fas fa-spinner fa-spin"></i></p>
+        </div>
+      </div>
+    </div>
+
+    <!--/.col (left) -->
+    <!-- right column -->
+    <div class="col-md-6">
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">إضافة تصنيف جديد</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form #warehouseForm="ngForm" (ngSubmit)="onSubmit(warehouseForm)">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="name">التصنيف*</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                required
+                minlength="4"
+                [(ngModel)]="warehouse.name"
+                #name="ngModel"
+                [class.is-invalid]="
+                  name.invalid && (name.dirty || name.touched)
+                "
+              />
+            </div>
+          </div>
+          <!-- /.card-body -->
+
+          <div class="card-footer">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="!warehouseForm.valid"
+              [disabled]="loading"
+            >
+              <span *ngIf="loading"
+                ><i class="fas fa-spinner fa-spin"></i
+              ></span>
+              حفظ
+            </button>
+            <button
+              *ngIf="isUpdate"
+              class="btn btn-info float-left"
+              (click)="resetFrom(warehouseForm)"
+            >
+              الغاء
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.card -->
+    </div>
+    <!--/.col (right) -->
+  </div>
+  <!-- /.row -->
+</div>
