@@ -150,6 +150,9 @@ export class MoveComponent implements OnInit {
     const existingItem = this.selectedItems.find((item: any) => {
       return item.id === currentItem.id;
     });
+    if (existingItem && currentItem !== existingItem) {
+      existingItem.qty = Number(existingItem.qty) + Number(currentItem.qty);
+    }
     if (!existingItem) {
       this.selectedItems.push(currentItem);
     }
