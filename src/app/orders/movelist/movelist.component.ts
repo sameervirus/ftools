@@ -73,11 +73,6 @@ export class MovelistComponent implements OnInit {
   }
 
   filterItems() {
-    console.log(this.client);
-    console.log(this.warehouse);
-    console.log(this.transfer_type);
-    console.log(this.from_trans_date);
-    console.log(this.to_trans_date);
     this.filteredItems = this.moves;
     if (this.client != 0) {
       this.filteredItems = this.filteredItems.filter((i: any) => {

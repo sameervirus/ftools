@@ -106,4 +106,14 @@ export class OrdersService {
   getMoveDetails(trans: string): Observable<any> {
     return this.http.get<any>('movements/' + trans, { observe: 'response' });
   }
+
+  getStorage(): Observable<any> {
+    return this.http.get<any>('storage', { observe: 'response' });
+  }
+
+  getCurrent(currentItem: any) {
+    return this.http.get<any>('item/' + currentItem, {
+      observe: 'response',
+    });
+  }
 }

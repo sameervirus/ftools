@@ -356,6 +356,9 @@ hr.box {
   .pagebreak {
     page-break-after: always;
   }
+  .no-print {
+    display: none;
+  }
 }
 
 /* fix I-check for rtl */

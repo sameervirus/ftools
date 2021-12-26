@@ -77,16 +77,23 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let detail of item.details; let i = index">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ detail.item.code }}</td>
-                  <td>{{ detail.item.name }}</td>
-                  <td>{{ detail.item.category }}</td>
-                  <td>{{ detail.item.unit }}</td>
-                  <td>{{ detail.cost }}</td>
-                  <td>{{ detail.qty }}</td>
-                  <td>{{ detail.qty * detail.cost }}</td>
-                </tr>
+                <ng-template
+                  ngFor
+                  let-detail
+                  [ngForOf]="item.details"
+                  let-i="index"
+                >
+                  <tr *ngIf="detail.qty != 0">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ detail.item.code }}</td>
+                    <td>{{ detail.item.name }}</td>
+                    <td>{{ detail.item.category }}</td>
+                    <td>{{ detail.item.unit }}</td>
+                    <td>{{ detail.cost }}</td>
+                    <td>{{ detail.qty }}</td>
+                    <td>{{ detail.qty * detail.cost }}</td>
+                  </tr>
+                </ng-template>
               </tbody>
             </table>
           </div>

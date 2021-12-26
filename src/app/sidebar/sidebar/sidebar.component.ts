@@ -19,6 +19,8 @@ export class SidebarComponent implements OnInit {
   homeMenu: boolean = false;
   codingMenu: boolean = false;
   movelistMenu: boolean = false;
+  storageMenu: boolean = false;
+  moveitemMenu: boolean = false;
 
   user: any;
   usersMenu: boolean = false;
@@ -85,6 +87,22 @@ export class SidebarComponent implements OnInit {
           this.movelistMenu = true;
         }
         break;
+      case 'storage':
+        this.tabsClose();
+        if (this.storageMenu) {
+          this.storageMenu = false;
+        } else {
+          this.storageMenu = true;
+        }
+        break;
+      case 'moveitem':
+        this.tabsClose();
+        if (this.moveitemMenu) {
+          this.moveitemMenu = false;
+        } else {
+          this.moveitemMenu = true;
+        }
+        break;
 
       case 'users':
         this.tabsClose();
@@ -114,6 +132,10 @@ export class SidebarComponent implements OnInit {
       this.codingMenu = true;
     } else if (url.includes('movelist')) {
       this.movelistMenu = true;
+    } else if (url.includes('storage')) {
+      this.storageMenu = true;
+    } else if (url.includes('moveitem')) {
+      this.moveitemMenu = true;
     } else if (url.includes('users')) {
       this.tabsClose();
       this.usersMenu = true;
@@ -132,6 +154,8 @@ export class SidebarComponent implements OnInit {
     this.homeMenu = false;
     this.codingMenu = false;
     this.movelistMenu = false;
+    this.storageMenu = false;
+    this.moveitemMenu = false;
     this.usersMenu = false;
     this.usersSub = false;
     this.usersComp = false;

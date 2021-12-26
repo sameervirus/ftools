@@ -8,14 +8,14 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
-import { PurchaseComponent } from './purchase/purchase.component';
-import { TransferComponent } from './transfer/transfer.component';
 import { MovelistComponent } from './movelist/movelist.component';
 import { ItemComponent } from './item/item.component';
 import { MoveComponent } from './move/move.component';
+import { StorageComponent } from './storage/storage.component';
+import { MoveitemComponent } from './moveitem/moveitem.component';
 
 @NgModule({
-  declarations: [PurchaseComponent, TransferComponent, MovelistComponent, ItemComponent, MoveComponent],
+  declarations: [MovelistComponent, ItemComponent, MoveComponent, StorageComponent, MoveitemComponent],
   imports: [
     FormsModule,
     CommonModule,
@@ -24,6 +24,6 @@ import { MoveComponent } from './move/move.component';
     NgSelectModule,
     NgxPermissionsModule.forChild(),
   ],
-  exports: [PurchaseComponent],
+  exports: [MoveComponent],
 })
 export class OrdersModule {}

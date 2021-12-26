@@ -4,9 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../_helpers';
 import { ItemComponent } from './item/item.component';
 import { MoveComponent } from './move/move.component';
+import { MoveitemComponent } from './moveitem/moveitem.component';
 import { MovelistComponent } from './movelist/movelist.component';
-import { PurchaseComponent } from './purchase/purchase.component';
-import { TransferComponent } from './transfer/transfer.component';
+import { StorageComponent } from './storage/storage.component';
 
 const routes: Routes = [
   {
@@ -15,22 +15,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: {
       breadcrumb: 'عمل حركة',
-    },
-  },
-  {
-    path: 'purchase',
-    component: PurchaseComponent,
-    canActivate: [AuthGuard],
-    data: {
-      breadcrumb: 'فاتورة مشتريات',
-    },
-  },
-  {
-    path: 'transfer',
-    component: TransferComponent,
-    canActivate: [AuthGuard],
-    data: {
-      breadcrumb: 'تحويل',
     },
   },
   {
@@ -47,6 +31,22 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: {
       breadcrumb: 'حركة',
+    },
+  },
+  {
+    path: 'storage',
+    component: StorageComponent,
+    canActivate: [AuthGuard],
+    data: {
+      breadcrumb: 'المخازن',
+    },
+  },
+  {
+    path: 'moveitem',
+    component: MoveitemComponent,
+    canActivate: [AuthGuard],
+    data: {
+      breadcrumb: 'كارت صنف',
     },
   },
 ];

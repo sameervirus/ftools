@@ -210,16 +210,18 @@
                 <th>Price</th>
                 <th>Total</th>
               </tr>
-              <tr *ngFor="let s of selectedItems; let n = index">
-                <td>{{ n + 1 }}</td>
-                <td>{{ s.code }}</td>
-                <td>{{ s.name }}</td>
-                <td>{{ s.unit }}</td>
-                <td>{{ s.category }}</td>
-                <td>{{ s.qty }}</td>
-                <td>{{ s.price }}</td>
-                <td>{{ s.price * s.qty }}</td>
-              </tr>
+              <ng-template ngFor let-s [ngForOf]="selectedItems" let-n="index">
+                <tr *ngIf="s.qty != 0">
+                  <td>{{ n + 1 }}</td>
+                  <td>{{ s.code }}</td>
+                  <td>{{ s.name }}</td>
+                  <td>{{ s.unit }}</td>
+                  <td>{{ s.category }}</td>
+                  <td>{{ s.qty }}</td>
+                  <td>{{ s.price }}</td>
+                  <td>{{ s.price * s.qty }}</td>
+                </tr>
+              </ng-template>
             </table>
           </div>
           <div class="col-sm-4">

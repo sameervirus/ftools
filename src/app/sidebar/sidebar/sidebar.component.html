@@ -49,17 +49,6 @@
             <p>الرئيسية</p>
           </a>
         </li>
-        <li *ngxPermissionsOnly="['coding']" class="nav-item">
-          <a
-            (click)="changeView('coding')"
-            [class.active]="codingMenu"
-            routerLink="/coding"
-            class="nav-link"
-          >
-            <i class="nav-icon fas fa-code"></i>
-            <p>التكويد</p>
-          </a>
-        </li>
         <li class="nav-item">
           <a
             (click)="changeView('movelist')"
@@ -71,6 +60,39 @@
             <p>الحركات</p>
           </a>
         </li>
+        <li class="nav-item">
+          <a
+            (click)="changeView('storage')"
+            [class.active]="storageMenu"
+            routerLink="/orders/storage"
+            class="nav-link"
+          >
+            <i class="nav-icon fas fa-store"></i>
+            <p>المخزون</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            (click)="changeView('moveitem')"
+            [class.active]="moveitemMenu"
+            routerLink="/orders/moveitem"
+            class="nav-link"
+          >
+            <i class="nav-icon fas fa-clipboard-list"></i>
+            <p>كارت صنف</p>
+          </a>
+        </li>
+        <li *ngxPermissionsOnly="['coding']" class="nav-item">
+          <a
+            (click)="changeView('coding')"
+            [class.active]="codingMenu"
+            routerLink="/coding"
+            class="nav-link"
+          >
+            <i class="nav-icon fas fa-code"></i>
+            <p>التكويد</p>
+          </a>
+        </li>
         <li class="nav-item" [class.menu-open]="usersMenu">
           <a
             (click)="changeView('users')"
@@ -80,7 +102,7 @@
             <i class="nav-icon fas fa-users"></i>
             <p>
               إدارة المستخدمين
-              <i class="right fas fa-angle-left"></i>
+              <i class="left fas fa-angle-left"></i>
             </p>
           </a>
           <ul class="nav nav-treeview" [class.d-block]="usersSub">

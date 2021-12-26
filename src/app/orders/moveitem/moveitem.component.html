@@ -1,0 +1,152 @@
+<div class="container-fluid">
+  <div class="row no-print">
+    <div class="col-12">
+      <!-- Main content -->
+      <div class="invoice p-3 mb-3">
+        <!-- info row -->
+        <div *ngIf="items" class="row invoice-info">
+          <!-- /.col -->
+          <div class="col-sm-2 invoice-col">
+            <label>اختر الصنف</label>
+          </div>
+          <div class="col-sm-6 invoice-col">
+            <div class="form-group position-relative">
+              <input
+                id="inputItem"
+                autocomplete="off"
+                type="text"
+                [(ngModel)]="itemInput"
+                class="form-control"
+                (keyup)="handleInput($event)"
+                (keydown)="handleDown($event)"
+              />
+              <div
+                class="ng-dropdown-panel ng-select-bottom"
+                style="opacity: 1"
+              >
+                <div *ngIf="isOpen" class="ng-dropdown-panel-items scroll-host">
+                  <div>
+                    <div
+                      *ngFor="let i of filteredItems; let idx = index"
+                      class="ng-option"
+                      [class.ng-option-marked]="idx === currentIndex"
+                      (click)="clickedItem(i)"
+                      (mouseover)="currentIndex = idx"
+                    >
+                      <span class="ng-option-label"
+                        >{{ i.code }} : {{ i.name }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 invoice-col d-none">
+            <button class="btn btn-primary" (click)="getCurrent(currentItem)">
+              عرض
+            </button>
+          </div>
+          <!-- /.col -->
+        </div>
+        <span *ngIf="!items"><i class="fas fa-spinner fa-spin"></i></span>
+        <!-- /.row -->
+      </div>
+      <!-- /.invoice -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+  <div *ngIf="currentItem" class="row">
+    <div class="col-12">
+      <!-- Main content -->
+      <div class="invoice p-3 mb-3">
+        <!-- this row will not appear when printing -->
+        <div class="row invoice-info">
+          <div class="col-sm-12">
+            <h2 class="text-center mb-3">كارت صنف: {{ currentItem.name }}</h2>
+            <table class="table table-bordered">
+              <tr>
+                <th class="bg-navy">كود الصنف</th>
+                <td class="w-15">{{ currentItem.code }}</td>
+                <th class="bg-navy">اسم الصنف</th>
+                <td colspan="5" class="w-15">{{ currentItem.name }}</td>
+              </tr>
+              <tr>
+                <th class="bg-navy">الوحدة</th>
+                <td class="w-15">{{ currentItem.unit }}</td>
+                <th class="bg-navy">التصنيف</th>
+                <td class="w-15">{{ currentItem.category }}</td>
+                <th class="bg-navy">أول سعر</th>
+                <td class="w-15">{{ currentItem.iprice }}</td>
+                <th class="bg-navy">أخر سعر</th>
+                <td class="w-15">{{ currentItem.price }}</td>
+              </tr>
+              <tr>
+                <th class="bg-navy">اجمالي الكمية</th>
+                <td class="w-15">{{ totalQty(currentItem.warehouses) }}</td>
+                <th class="bg-navy">المخازن</th>
+                <td class="w-15" colspan="5">
+                  <ul class="nav flex-wrap">
+                    <li
+                      *ngFor="let w of currentItem.warehouses"
+                      class="nav-item"
+                    >
+                      <span class="ml-3">{{ w.name }}</span>
+                      <span class="float-left badge bg-primary ml-5">{{
+                        w.pivot.qty
+                      }}</span>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.col -->
+        </div>
+      </div>
+      <!-- /.invoice -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <div *ngIf="moves" class="row">
+    <div class="col-12">
+      <!-- Main content -->
+      <div class="invoice p-3 mb-3">
+        <!-- this row will not appear when printing -->
+        <div class="row invoice-info">
+          <div class="col-sm-12">
+            <h2 class="mb-3">حركات الصنف</h2>
+            <table class="table table-bordered">
+              <tr>
+                <th>#</th>
+                <th>رقم الاذن</th>
+                <th>التاريخ</th>
+                <th>من</th>
+                <th>الي</th>
+                <th>نوع الحركة</th>
+                <th>الكمية</th>
+                <th>السعر</th>
+                <th>الاجمالي</th>
+              </tr>
+              <tr *ngFor="let move of moves; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ move.header.trans_no }}</td>
+                <td>{{ move.header.trans_date }}</td>
+                <td>{{ move.header.from_warehouse }}</td>
+                <td>{{ move.header.to_warehouse }}</td>
+                <td>{{ move.header.transfer_type_name }}</td>
+                <td>{{ move.qty }}</td>
+                <td>{{ move.cost }}</td>
+                <td>{{ move.qty * move.cost }}</td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.col -->
+        </div>
+      </div>
+      <!-- /.invoice -->
+    </div>
+    <!-- /.col -->
+  </div>
+</div>
