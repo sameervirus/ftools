@@ -131,7 +131,11 @@
               </tr>
               <tr *ngFor="let move of moves; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ move.header.trans_no }}</td>
+                <td>
+                  <a routerLink="/orders/item/{{ move.header.trans_no }}">{{
+                    move.header.trans_no
+                  }}</a>
+                </td>
                 <td>{{ move.header.trans_date }}</td>
                 <td>{{ move.header.from_warehouse }}</td>
                 <td>{{ move.header.to_warehouse }}</td>

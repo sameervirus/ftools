@@ -22,6 +22,15 @@ export class SidebarComponent implements OnInit {
   storageMenu: boolean = false;
   moveitemMenu: boolean = false;
 
+  movesMenu: boolean = false;
+  movesSub: boolean = false;
+  purchaseComp: boolean = false;
+  transferComp: boolean = false;
+  exchangeComp: boolean = false;
+  returnComp: boolean = false;
+  salesComp: boolean = false;
+  destructionComp: boolean = false;
+
   user: any;
   usersMenu: boolean = false;
   usersSub: boolean = false;
@@ -69,6 +78,16 @@ export class SidebarComponent implements OnInit {
           this.homeMenu = false;
         } else {
           this.homeMenu = true;
+        }
+        break;
+      case 'moves':
+        this.tabsClose();
+        if (this.movesMenu) {
+          this.movesMenu = false;
+          this.movesSub = false;
+        } else {
+          this.movesMenu = true;
+          this.movesSub = true;
         }
         break;
       case 'coding':
@@ -136,6 +155,16 @@ export class SidebarComponent implements OnInit {
       this.storageMenu = true;
     } else if (url.includes('moveitem')) {
       this.moveitemMenu = true;
+    } else if (url.includes('/orders/move/')) {
+      this.tabsClose();
+      this.movesMenu = true;
+      this.movesSub = true;
+      this.purchaseComp = url.includes('/orders/move/1') ? true : false;
+      this.transferComp = url.includes('/orders/move/2') ? true : false;
+      this.exchangeComp = url.includes('/orders/move/3') ? true : false;
+      this.returnComp = url.includes('/orders/move/4') ? true : false;
+      this.salesComp = url.includes('/orders/move/5') ? true : false;
+      this.destructionComp = url.includes('/orders/move/6') ? true : false;
     } else if (url.includes('users')) {
       this.tabsClose();
       this.usersMenu = true;
@@ -161,5 +190,13 @@ export class SidebarComponent implements OnInit {
     this.usersComp = false;
     this.rolesComp = false;
     this.profileComp = false;
+    this.movesMenu = false;
+    this.movesSub = false;
+    this.purchaseComp = false;
+    this.transferComp = false;
+    this.exchangeComp = false;
+    this.returnComp = false;
+    this.salesComp = false;
+    this.destructionComp = false;
   }
 }

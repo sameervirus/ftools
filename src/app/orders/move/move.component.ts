@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterEvent, Event } from '@angular/router';
+import { filter } from 'rxjs';
 
-import { NotificationService, OrdersService } from 'src/app/_services';
+import {
+  LoaderService,
+  NotificationService,
+  OrdersService,
+} from 'src/app/_services';
 
 @Component({
   selector: 'app-move',
@@ -15,7 +20,7 @@ export class MoveComponent implements OnInit {
   clients: any;
   client: number = 0;
   warehouse: number = 0;
-  from_warehouse: any;
+  from_warehouse: number = 0;
   warehouses: any;
   isOpen = false;
   filteredItems: any;
@@ -34,23 +39,35 @@ export class MoveComponent implements OnInit {
   type: any;
   title: any;
   isUpdate = false;
+  onSubmit: boolean = false;
 
   constructor(
     private ordersService: OrdersService,
     private notificationService: NotificationService,
     private activatedRoute: ActivatedRoute,
+    private loaderService: LoaderService,
     private router: Router
-  ) {}
+  ) {
+    router.events
+      .pipe(filter((e: Event): e is RouterEvent => e instanceof RouterEvent))
+      .subscribe((e: RouterEvent) => {
+        const type = this.activatedRoute.snapshot.paramMap.get('type');
+        const trans = this.activatedRoute.snapshot.paramMap.get('trans');
+        if (trans && trans !== '0') this.getMoveDetails(trans);
+        if (type) this.type = type;
+        this.switchTitle(type);
+      });
+  }
 
   ngOnInit(): void {
     const type = this.activatedRoute.snapshot.paramMap.get('type');
     const trans = this.activatedRoute.snapshot.paramMap.get('trans');
     if (trans && trans !== '0') this.getMoveDetails(trans);
     if (type) this.type = type;
-    if (this.type == 1) this.from_warehouse = 1;
     this.getOrders();
     this.switchTitle(type);
   }
+
   getMoveDetails(trans: string) {
     this.ordersService.getMoveDetails(trans).subscribe((res) => {
       this.updateSelected(res.body.item);
@@ -82,8 +99,20 @@ export class MoveComponent implements OnInit {
         case '1':
           this.title = 'فاتورة مشتريات';
           break;
-        case '5':
+        case '2':
           this.title = 'حركة مخازن';
+          break;
+        case '3':
+          this.title = 'تكوين سلعي';
+          break;
+        case '4':
+          this.title = 'مردودات مشتريات';
+          break;
+        case '5':
+          this.title = 'مبيعات';
+          break;
+        case '6':
+          this.title = 'اهلاك';
           break;
 
         default:
@@ -94,10 +123,12 @@ export class MoveComponent implements OnInit {
   }
 
   getOrders() {
+    this.loaderService.display(true);
     this.ordersService.getOrders().subscribe((res) => {
       this.items = res.body.items;
       this.clients = res.body.clients;
       this.warehouses = res.body.warehouses;
+      this.loaderService.display(false);
     });
   }
 
@@ -180,11 +211,18 @@ export class MoveComponent implements OnInit {
   }
 
   saveInvoice() {
-    if (this.type == 1 && this.client == 0) {
+    if ((this.type == 1 || this.type == 4) && this.client == 0) {
       alert('من فضلك اختار العميل');
       return false;
     }
-    if (this.from_warehouse == 0) {
+    if (
+      this.type != 1 &&
+      this.type != 3 &&
+      this.type != 4 &&
+      this.type != 5 &&
+      this.type != 6 &&
+      this.from_warehouse == 0
+    ) {
       alert('من فضلك اختار من مخزن');
       return false;
     }
@@ -192,11 +230,11 @@ export class MoveComponent implements OnInit {
       alert('من فضلك اختار المخزن');
       return false;
     }
-    if (this.type == 1 && this.invoiceNo == '') {
+    if ((this.type == 1 || this.type == 4) && this.invoiceNo == '') {
       alert('من فضلك ادخل رقم الفاتورة او اكتب بدون');
       return false;
     }
-    if (this.type == 1 && this.invoiceDate == '') {
+    if ((this.type == 1 || this.type == 4) && this.invoiceDate == '') {
       alert('من فضلك ادخل رقم الفاتورة او اكتب بدون');
       return false;
     }
@@ -208,6 +246,8 @@ export class MoveComponent implements OnInit {
       alert('من فضلك ادخل تاريخ الاذن');
       return false;
     }
+
+    this.onSubmit = true;
 
     this.ordersService
       .addMove(
@@ -240,7 +280,9 @@ export class MoveComponent implements OnInit {
           }
           this.showNotify(message, 'error');
         },
-        complete: () => {},
+        complete: () => {
+          this.onSubmit = false;
+        },
       });
 
     return true;

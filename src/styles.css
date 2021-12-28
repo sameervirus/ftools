@@ -27,8 +27,8 @@ body.login-page .content-wrapper {
 
 #achtung-overlay.full-screen .achtungWait {
   top: 45%;
-  left: 50%;
-  margin-left: -150px;
+  right: 50%;
+  margin-right: -150px;
   text-align: center;
 }
 
@@ -50,8 +50,8 @@ body.login-page .content-wrapper {
 
 #achtung-overlay .achtung .achtung-message-icon {
   margin-top: 0px;
-  margin-left: -0.5em;
-  margin-right: 0.5em;
+  margin-right: -0.5em;
+  margin-left: 0.5em;
 }
 
 #achtung-overlay .achtung .achtung-close-button {

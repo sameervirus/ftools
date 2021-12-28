@@ -14,7 +14,7 @@ export class AppComponent {
 
   hideElement = false;
   print = false;
-  loading = false;
+  loading = true;
   device = this.deviceService.deviceType;
 
   constructor(

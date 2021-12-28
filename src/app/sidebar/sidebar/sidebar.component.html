@@ -49,6 +49,81 @@
             <p>الرئيسية</p>
           </a>
         </li>
+        <li class="nav-item" [class.menu-open]="movesMenu">
+          <a
+            (click)="changeView('moves')"
+            [class.active]="movesMenu"
+            class="nav-link pointer"
+          >
+            <i class="nav-icon fas fa-exchange-alt"></i>
+            <p>
+              الحركات
+              <i class="left fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview" [class.d-block]="movesSub">
+            <li class="nav-item">
+              <a
+                [routerLink]="['/orders/move/1/0']"
+                [class.active]="purchaseComp"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>فاتورة مشتريات</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLink]="['/orders/move/2/0']"
+                [class.active]="transferComp"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>عمل تحويل</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLink]="['/orders/move/3/0']"
+                [class.active]="exchangeComp"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>تكوين سلعى</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLink]="['/orders/move/4/0']"
+                [class.active]="returnComp"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>مردودات مشتريات</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLink]="['/orders/move/5/0']"
+                [class.active]="salesComp"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>مبيعات</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLink]="['/orders/move/6/0']"
+                [class.active]="destructionComp"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>اهلاك</p>
+              </a>
+            </li>
+          </ul>
+        </li>
         <li class="nav-item">
           <a
             (click)="changeView('movelist')"
@@ -57,7 +132,7 @@
             class="nav-link"
           >
             <i class="nav-icon fas fa-exchange-alt"></i>
-            <p>الحركات</p>
+            <p>سجل الحركة</p>
           </a>
         </li>
         <li class="nav-item">

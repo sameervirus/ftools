@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OrdersService } from 'src/app/_services';
+import { LoaderService, OrdersService } from 'src/app/_services';
 
 @Component({
   selector: 'app-moveitem',
@@ -14,7 +14,10 @@ export class MoveitemComponent implements OnInit {
   items: any;
   itemInput: any;
   moves: any;
-  constructor(private ordersService: OrdersService) {}
+  constructor(
+    private ordersService: OrdersService,
+    private loaderService: LoaderService
+  ) {}
 
   ngOnInit(): void {
     this.getOrders();
@@ -35,9 +38,11 @@ export class MoveitemComponent implements OnInit {
   }
 
   getCurrent(currentItem: any) {
+    this.loaderService.display(true);
     this.ordersService.getCurrent(currentItem).subscribe((res) => {
       this.currentItem = res.body.item;
       this.moves = res.body.moves;
+      this.loaderService.display(false);
     });
   }
 

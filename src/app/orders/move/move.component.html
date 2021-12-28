@@ -1,6 +1,10 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
+      <div *ngIf="type == 3" class="callout callout-info">
+        <h5><i class="fas fa-info"></i> ملاحظة</h5>
+        في حالة التكوين السلعي برجاء تحديد المواد المستهلكة بالسالب
+      </div>
       <!-- Main content -->
       <div class="invoice p-3 mb-3">
         <!-- title row -->
@@ -17,7 +21,7 @@
         </div>
         <hr />
         <!-- info row -->
-        <div *ngIf="type == 1" class="row invoice-info">
+        <div *ngIf="type == 1 || type == 4" class="row invoice-info">
           <div class="col-sm-3 invoice-col">
             <div class="form-group">
               <label>العميل</label>
@@ -52,7 +56,12 @@
           <!-- /.col -->
         </div>
         <div class="row invoice-info">
-          <div class="col-sm-3 invoice-col">
+          <div
+            *ngIf="
+              type != 1 && type != 3 && type != 4 && type != 5 && type != 6
+            "
+            class="col-sm-3 invoice-col"
+          >
             <div class="form-group">
               <label>من مخزن</label>
               <ng-select
@@ -70,7 +79,7 @@
           <!-- /.col -->
           <div class="col-sm-3 invoice-col">
             <div class="form-group">
-              <label>الي مخزن</label>
+              <label>مخزن</label>
               <ng-select
                 [items]="warehouses"
                 bindLabel="name"
@@ -245,6 +254,7 @@
                     (click)="saveInvoice()"
                     type="button"
                     class="btn btn-block bg-gradient-primary"
+                    [disabled]="onSubmit"
                   >
                     حفظ
                   </button>

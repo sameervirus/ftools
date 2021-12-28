@@ -101,6 +101,19 @@ export class StorageComponent implements OnInit {
       });
 
       this.filteredItems = item.filter((i: any) => i !== null);
+      let ok = false;
+      this.filteredItems = this.filteredItems.map((i: any) => {
+        i.warehouses.forEach((w: any) => {
+          if (w.id == this.warehouse && w.pivot.qty != 0) {
+            ok = true;
+          }
+        });
+        if (ok) return i;
+      });
+      this.filteredItems = this.filteredItems.filter(
+        (i: any) => i !== undefined
+      );
+      console.log(this.filteredItems);
     }
 
     if (this.searchStr != '' && this.searchStr != undefined) {
