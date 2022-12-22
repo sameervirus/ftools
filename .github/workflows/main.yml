@@ -24,6 +24,6 @@ jobs:
           server: 193.203.15.125
           username: visiongrp
           password: ${{ secrets.password }}
-          protocol: ftps
+          protocol: sftp
           port: 22
           server-dir: /public_html/tools/
