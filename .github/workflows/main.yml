@@ -26,4 +26,3 @@ jobs:
           password: ${{ secrets.password }}
           protocol: ftp
           port: 21
-          server-dir: /public_html/tools/
