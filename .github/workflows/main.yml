@@ -21,7 +21,7 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
-          server: ftp.visiongrp.net
+          server: 193.203.15.125
           username: visiongrp
           password: ${{ secrets.password }}
           protocol: ftps
