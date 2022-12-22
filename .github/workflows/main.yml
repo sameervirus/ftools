@@ -21,9 +21,9 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
-          server: 193.203.15.125
-          username: visiongrp
+          server: ftp.visiongrp.net
+          username: github@visiongrp.net
           password: ${{ secrets.password }}
-          protocol: sftp
-          port: 22
+          protocol: ftp
+          port: 21
           server-dir: /public_html/tools/
